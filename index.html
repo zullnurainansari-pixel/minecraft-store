@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Minecraft Store</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#05070d;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Animated Background */
+body::before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,#174b35 0%,transparent 70%);
+    top:-250px;
+    left:-200px;
+    animation:moveGlow 7s infinite alternate;
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle,#173b70 0%,transparent 70%);
+    bottom:-300px;
+    right:-200px;
+    animation:moveGlow2 8s infinite alternate;
+    z-index:-1;
+}
+
+@keyframes moveGlow{
+    from{transform:translate(0,0);}
+    to{transform:translate(150px,150px);}
+}
+
+@keyframes moveGlow2{
+    from{transform:translate(0,0);}
+    to{transform:translate(-120px,-120px);}
+}
+
+/* Header */
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(5,7,13,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.nav{
+    max-width:1150px;
+    margin:auto;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#36e27b;
+}
+
+nav a{
+    color:#bbb;
+    text-decoration:none;
+    margin-left:22px;
+    font-size:14px;
+    transition:.3s;
+}
+
+nav a:hover{
+    color:#36e27b;
+}
+
+/* Hero */
+.hero{
+    min-height:480px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:80px 20px;
+}
+
+.hero-content{
+    max-width:850px;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 16px;
+    border:1px solid rgba(54,226,123,.4);
+    background:rgba(54,226,123,.08);
+    color:#36e27b;
+    border-radius:30px;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.hero h1{
+    font-size:clamp(42px,8vw,82px);
+    font-weight:1000;
+    line-height:1;
+    text-shadow:0 0 30px rgba(54,226,123,.25);
+}
+
+.hero h1 span{
+    color:#36e27b;
+}
+
+.hero p{
+    color:#999;
+    font-size:17px;
+    margin:22px auto 30px;
+    max-width:600px;
+    line-height:1.7;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:14px 24px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    transition:.3s;
+}
+
+.btn-primary{
+    background:#36e27b;
+    color:#06100a;
+}
+
+.btn-primary:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px rgba(54,226,123,.25);
+}
+
+.btn-dark{
+    background:#151a23;
+    color:white;
+    border:1px solid #272e3a;
+}
+
+.btn-dark:hover{
+    transform:translateY(-3px);
+    border-color:#36e27b;
+}
+
+/* Sections */
+section{
+    max-width:1150px;
+    margin:auto;
+    padding:70px 20px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.section-title h2{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.section-title p{
+    color:#777;
+}
+
+/* Store Cards */
+.store{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    position:relative;
+    background:linear-gradient(180deg,#111720,#0b0e14);
+    border:1px solid #222a35;
+    border-radius:16px;
+    padding:28px 20px;
+    text-align:center;
+    overflow:hidden;
+    transition:.35s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:#36e27b;
+    box-shadow:0 15px 45px rgba(0,0,0,.45);
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:3px;
+    background:#36e27b;
+}
+
+.card-icon{
+    font-size:50px;
+    margin-bottom:15px;
+}
+
+.card h3{
+    font-size:24px;
+    margin-bottom:8px;
+}
+
+.card .price{
+    font-size:32px;
+    font-weight:900;
+    margin:15px 0;
+}
+
+.card .price small{
+    font-size:13px;
+    color:#777;
+    font-weight:normal;
+}
+
+.card ul{
+    list-style:none;
+    text-align:left;
+    margin:20px 0;
+}
+
+.card li{
+    color:#aaa;
+    margin:11px 0;
+    font-size:14px;
+}
+
+.card li::before{
+    content:"✓";
+    color:#36e27b;
+    font-weight:bold;
+    margin-right:8px;
+}
+
+.buy{
+    width:100%;
+}
+
+/* Featured */
+.featured{
+    border-color:#36e27b;
+    transform:scale(1.03);
+}
+
+.popular{
+    position:absolute;
+    top:13px;
+    right:-30px;
+    background:#36e27b;
+    color:#06100a;
+    padding:5px 35px;
+    font-size:11px;
+    font-weight:bold;
+    transform:rotate(35deg);
+}
+
+/* Server */
+.server-box{
+    background:#0d121a;
+    border:1px solid #242d39;
+    border-radius:18px;
+    padding:35px 25px;
+    text-align:center;
+}
+
+.server-ip{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    margin:20px 0;
+    padding:15px 20px;
+    background:#070a0f;
+    border:1px solid #293340;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.online{
+    color:#36e27b;
+    font-size:13px;
+}
+
+/* Info */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.info{
+    background:#0d121a;
+    border:1px solid #202833;
+    border-radius:15px;
+    padding:25px;
+}
+
+.info h3{
+    margin-bottom:10px;
+}
+
+.info p{
+    color:#888;
+    line-height:1.6;
+    font-size:14px;
+}
+
+/* Footer */
+footer{
+    text-align:center;
+    padding:35px 20px;
+    border-top:1px solid #1b222c;
+    color:#666;
+}
+
+footer span{
+    color:#36e27b;
+}
+
+/* Mobile */
+@media(max-width:900px){
+    .store{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+    nav{
+        display:none;
+    }
+
+    .nav{
+        justify-content:center;
+    }
+
+    .hero{
+        min-height:430px;
+        padding:60px 15px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    section{
+        padding:50px 15px;
+    }
+
+    .store{
+        grid-template-columns:1fr;
+    }
+
+    .featured{
+        transform:none;
+    }
+
+    .section-title h2{
+        font-size:28px;
+    }
+
+    .server-ip{
+        font-size:14px;
+        max-width:100%;
+        word-break:break-all;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+<div class="nav">
+
+<div class="logo">
+⚔️ <span>YOUR</span>SMP STORE
+</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#store">Store</a>
+<a href="#server">Server</a>
+<a href="#discord">Discord</a>
+</nav>
+
+</div>
+</header>
+
+
+<!-- HERO -->
+<div class="hero" id="home">
+
+<div class="hero-content">
+
+<div class="badge">
+🔥 OFFICIAL MINECRAFT STORE
+</div>
+
+<h1>
+YOUR <span>SMP</span>
+</h1>
+
+<p>
+Upgrade your Minecraft experience with exclusive ranks,
+special perks and powerful rewards.
+</p>
+
+<div class="buttons">
+
+<a href="#store" class="btn btn-primary">
+🛒 VIEW STORE
+</a>
+
+<a href="#server" class="btn btn-dark">
+🎮 PLAY NOW
+</a>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- STORE -->
+<section id="store">
+
+<div class="section-title">
+<h2>👑 SERVER RANKS</h2>
+<p>Choose your rank and unlock exclusive perks.</p>
+</div>
+
+<div class="store">
+
+
+<!-- VIP -->
+<div class="card">
+
+<div class="card-icon">👑</div>
+
+<h3>VIP</h3>
+
+<div class="price">
+₹49 <small>/ Lifetime</small>
+</div>
+
+<ul>
+<li>VIP Prefix</li>
+<li>2 Extra Homes</li>
+<li>VIP Kit</li>
+<li>Special Chat Color</li>
+<li>Exclusive Perks</li>
+</ul>
+
+<a class="btn btn-primary buy"
+href="https://discord.gg/YOURINVITE"
+target="_blank">
+🛒 BUY VIP
+</a>
+
+</div>
+
+
+<!-- MVP -->
+<div class="card">
+
+<div class="card-icon">💎</div>
+
+<h3>MVP</h3>
+
+<div class="price">
+₹99 <small>/ Lifetime</small>
+</div>
+
+<ul>
+<li>MVP Prefix</li>
+<li>4 Extra Homes</li>
+<li>MVP Kit</li>
+<li>/feed command</li>
+<li>Exclusive Perks</li>
+</ul>
+
+<a class="btn btn-primary buy"
+href="https://discord.gg/YOURINVITE"
+target="_blank">
+🛒 BUY MVP
+</a>
+
+</div>
+
+
+<!-- LEGEND -->
+<div class="card featured">
+
+<div class="popular">
+POPULAR
+</div>
+
+<div class="card-icon">⚡</div>
+
+<h3>LEGEND</h3>
+
+<div class="price">
+₹199 <small>/ Lifetime</small>
+</div>
+
+<ul>
+<li>LEGEND Prefix</li>
+<li>6 Extra Homes</li>
+<li>Legend Kit</li>
+<li>/feed command</li>
+<li>Special Effects</li>
+</ul>
+
+<a class="btn btn-primary buy"
+href="https://discord.gg/YOURINVITE"
+target="_blank">
+🛒 BUY LEGEND
+</a>
+
+</div>
+
+
+<!-- HERO -->
+<div class="card">
+
+<div class="card-icon">🏆</div>
+
+<h3>HERO</h3>
+
+<div class="price">
+₹299 <small>/ Lifetime</small>
+</div>
+
+<ul>
+<li>HERO Prefix</li>
+<li>Unlimited Homes</li>
+<li>Hero Kit</li>
+<li>Special Commands</li>
+<li>All Premium Perks</li>
+</ul>
+
+<a class="btn btn-primary buy"
+href="https://discord.gg/YOURINVITE"
+target="_blank">
+🛒 BUY HERO
+</a>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- SERVER -->
+<section id="server">
+
+<div class="section-title">
+<h2>🎮 JOIN OUR SERVER</h2>
+<p>Start your adventure today.</p>
+</div>
+
+<div class="server-box">
+
+<div class="online">
+● SERVER ONLINE
+</div>
+
+<div class="server-ip">
+<span id="serverIP">play.yoursmp.com</span>
+
+<button class="btn btn-primary"
+onclick="copyIP()">
+COPY IP
+</button>
+
+</div>
+
+<p style="color:#777;">
+Java Edition • Survival • Lifesteal • Community
+</p>
+
+</div>
+
+</section>
+
+
+<!-- WHY US -->
+<section>
+
+<div class="section-title">
+<h2>✨ WHY PLAY WITH US?</h2>
+<p>Everything you need for an amazing Minecraft experience.</p>
+</div>
+
+<div class="info-grid">
+
+<div class="info">
+<h3>⚡ Powerful Ranks</h3>
+<p>
+Unlock exclusive commands, kits and special perks.
+</p>
+</div>
+
+<div class="info">
+<h3>🛡️ Fair Gameplay</h3>
+<p>
+Our goal is to provide a fun and fair Minecraft community.
+</p>
+</div>
+
+<div class="info" id="discord">
+<h3>💬 Active Community</h3>
+<p>
+Join our Discord community and play with other players.
+</p>
+
+<br>
+
+<a class="btn btn-primary"
+href="https://discord.gg/YOURINVITE"
+target="_blank">
+JOIN DISCORD
+</a>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+<p>
+© 2026 <span>YOUR SMP</span> • All Rights Reserved
+</p>
+
+<p style="margin-top:8px;">
+Not affiliated with Mojang or Microsoft.
+</p>
+
+</footer>
+
+
+<script>
+
+function copyIP(){
+
+const ip =
+document.getElementById("serverIP").innerText;
+
+navigator.clipboard.writeText(ip);
+
+alert("✅ Server IP copied!");
+
+}
+
+</script>
+
+</body>
+  </html>
